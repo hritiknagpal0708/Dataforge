@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  :focus-visible { outline: 2px solid #0E5A4F; outline-offset: 3px; }
+  ::selection { background: #F2B134; color: #0F1B26; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
