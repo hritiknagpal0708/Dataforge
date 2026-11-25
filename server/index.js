@@ -44,7 +44,9 @@ const app = express()
 app.disable('x-powered-by')
 app.set('trust proxy', 1)
 app.use(express.json({ limit: '20kb' }))
-app.use(cors({ origin: ALLOWED_ORIGINS.split(',').map((o) => o.trim()) }))
+const allowed = ALLOWED_ORIGINS.split(',').map((o) => o.trim())
+const previewRe = /^https:\/\/dataforge-[a-z0-9]+-dataforge7\.vercel\.app$/
+app.use(cors({ origin: (origin, cb) => cb(null, !origin || allowed.includes(origin) || previewRe.test(origin)) }))
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }))
 
