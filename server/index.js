@@ -42,6 +42,7 @@ const escapeHtml = (s) =>
 
 const app = express()
 app.disable('x-powered-by')
+app.set('trust proxy', 1)
 app.use(express.json({ limit: '20kb' }))
 app.use(cors({ origin: ALLOWED_ORIGINS.split(',').map((o) => o.trim()) }))
 
@@ -108,4 +109,7 @@ if (fs.existsSync(dist)) {
   app.get('*', (_req, res) => res.sendFile(path.join(dist, 'index.html')))
 }
 
-app.listen(PORT, () => console.log(`DataForge server listening on http://localhost:${PORT}${dryRun ? ' (DRY_RUN)' : ''}`))
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`DataForge server listening on http://localhost:${PORT}`))
+}
+export default app
